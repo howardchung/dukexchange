@@ -11,7 +11,6 @@ users.index('id', {
     unique: true
 });
 var listings = db.get("listings");
-var offers = db.get("offers");
 var reviews = db.get("reviews");
 var passport = require('passport');
 var multiparty = require('multiparty');
@@ -76,8 +75,17 @@ app.get('/users/:user_id', function(req, res, next) {
         });
     });
 });
-app.get('/listings/:listing_id', function(req, res) {
-    res.render("listing");
+app.get('/listings/:listing_id', function(req, res, next) {
+    listings.findOne({
+        _id: req.params.listing_id
+    }, function(err, l) {
+        if (err) {
+            return next(err);
+        }
+        res.render("listing", {
+            listing: l
+        });
+    });
 });
 app.post("/listings", function(req, res, next) {
     var form = new multiparty.Form();
@@ -97,8 +105,8 @@ app.post("/offers", function(req, res, next) {
         if (err) {
             return next(err);
         }
-        //offerer id
-        //item id
+        //user id
+        //listing id
         //offer
         console.log(fields);
         console.log(files);
