@@ -1,0 +1,17 @@
+extends ../layout
+
+mixin listing-tr(fieldname, label, listing)
+  tr
+    td= label
+    td= listing[fieldname]
+
+block content
+  .row
+    .col-xs-12.col-md-8
+      h1= listing.title
+      p= listing.description
+      table.table
+        +listing-tr('size', 'Size', listing)
+        +listing-tr('condition', 'Condition', listing)
+        +listing-tr('brand', 'Brand', listing)
+        +listing-tr('color', 'Color', listing)

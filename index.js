@@ -12,6 +12,9 @@ users.index('id', {
 });
 var listings = db.get("listings");
 var reviews = db.get("reviews");
+
+var listingRoutes = require('./routes/listings');
+
 var passport = require('passport');
 var multiparty = require('multiparty');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -58,11 +61,15 @@ app.get('/logout', function(req, res) {
     req.session = null;
     res.redirect('/');
 });
+
 app.get('/', function(req, res) {
     res.render("index", {
         user: req.user
     });
 });
+
+app.use('/listings', listingRoutes(db));
+
 app.get('/users/:user_id', function(req, res, next) {
     users.findOne({
         id: req.params.user_id
@@ -73,30 +80,6 @@ app.get('/users/:user_id', function(req, res, next) {
         res.render("user", {
             user: user
         });
-    });
-});
-app.get('/listings/:listing_id', function(req, res, next) {
-    listings.findOne({
-        _id: req.params.listing_id
-    }, function(err, l) {
-        if (err) {
-            return next(err);
-        }
-        res.render("listing", {
-            listing: l
-        });
-    });
-});
-app.post("/listings", function(req, res, next) {
-    var form = new multiparty.Form();
-    form.parse(req, function(err, fields, files) {
-        if (err) {
-            return next(err);
-        }
-        //size, condition, brand, color (all text?)
-        //images
-        console.log(fields);
-        console.log(files);
     });
 });
 app.post("/offers", function(req, res, next) {

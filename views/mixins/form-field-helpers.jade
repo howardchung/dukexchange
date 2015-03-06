@@ -1,0 +1,4 @@
+mixin text-form-group(fieldname, label)
+  .form-group
+    label(for=fieldname)= label
+    input.form-control(type="text" name=fieldname placeholder=label)
