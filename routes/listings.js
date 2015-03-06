@@ -2,11 +2,12 @@ var router = require('express').Router();
 var multiparty = require('multiparty');
 var async = require('async');
 var _ = require('underscore');
+var requireUser = require('../lib/helpers').requireUser;
 
 module.exports = function(db) {
   var listings = db.get('listings');
 
-  router.post('/', function(req, res, next) {
+  router.post('/', requireUser(function(req, res, next) {
     var form = new multiparty.Form();
     async.waterfall([
       function(cb) {
@@ -32,12 +33,12 @@ module.exports = function(db) {
       }
       return res.redirect('/listings/' + doc._id);
     });
-  });
+  }));
 
-  router.get('/new', function(req, res, next) {
+  router.get('/new', requireUser(function(req, res, next) {
     res.render('listings/new', {
     });
-  });
+  }));
 
   router.get('/:listing_id', function(req, res, next) {
     listings.findOne({
