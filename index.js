@@ -49,6 +49,7 @@ passport.use(new GoogleStrategy({
         done(err, profile);
     });
 }));
+
 app.get('/auth/google', passport.authenticate('google', {
     scope: 'openid email'
 }));
@@ -62,9 +63,14 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
+// Middleware to include user on every response
+app.use(function(req, res, next) {
+  res.locals.user = req.user;
+  next();
+});
+
 app.get('/', function(req, res) {
     res.render("index", {
-        user: req.user
     });
 });
 
@@ -78,7 +84,6 @@ app.get('/users/:user_id', function(req, res, next) {
             return next(err);
         }
         res.render("user", {
-            user: user
         });
     });
 });
