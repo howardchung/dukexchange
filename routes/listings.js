@@ -23,6 +23,7 @@ module.exports = function(db) {
         condition: _.first(fields.condition) || '',
         brand: _.first(fields.brand) || '',
         color: _.first(fields.color) || '',
+        userId: req.user.id
       }, function(err, doc) {
         cb(err, doc);
       });
