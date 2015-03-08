@@ -3,7 +3,6 @@ dotenv.load();
 var express = require('express');
 var session = require('cookie-session');
 var app = express();
-//var async = require('async');
 var moment = require('moment');
 var db = require('monk')(process.env.MONGOLAB_URI || "mongodb://localhost/dukeexchange");
 var users = db.get("users");
@@ -13,7 +12,8 @@ users.index('id', {
 var listings = db.get("listings");
 var reviews = db.get("reviews");
 
-var listingRoutes = require('./routes/listings');
+var routes = require('./routes/routes');
+
 
 var passport = require('passport');
 var multiparty = require('multiparty');
@@ -69,51 +69,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('/', function(req, res) {
-    res.render("index", {
-    });
-});
 
-app.use('/listings', listingRoutes(db));
+app.use('/', routes(db));
 
-app.get('/users/:user_id', function(req, res, next) {
-    users.findOne({
-        id: req.params.user_id
-    }, function(err, user) {
-        if (err) {
-            return next(err);
-        }
-        res.render("user", {
-        });
-    });
-});
-app.post("/offers", function(req, res, next) {
-    var form = new multiparty.Form();
-    form.parse(req, function(err, fields, files) {
-        if (err) {
-            return next(err);
-        }
-        //user id
-        //listing id
-        //offer
-        console.log(fields);
-        console.log(files);
-    });
-});
-app.post("/reviews", function(req, res, next) {
-    var form = new multiparty.Form();
-    form.parse(req, function(err, fields, files) {
-        if (err) {
-            return next(err);
-        }
-        //reviewer id
-        //reviewee id
-        //rating
-        //comment
-        console.log(fields);
-        console.log(files);
-    });
-});
 app.use(function(req, res, next) {
     var err = new Error("Not Found");
     err.status = 404;

@@ -11,23 +11,24 @@ module.exports = function(db) {
     var form = new multiparty.Form();
     async.waterfall([
       function(cb) {
-      form.parse(req, function(err, fields, files) {
-        cb(err, fields, files);
-      });
-    },
-    function(fields, files, cb) {
-      listings.insert({
-        title: _.first(fields.title) || '',
-        description: _.first(fields.description) || '',
-        size: _.first(fields.size) || '',
-        condition: _.first(fields.condition) || '',
-        brand: _.first(fields.brand) || '',
-        color: _.first(fields.color) || '',
-        userId: req.user.id
-      }, function(err, doc) {
-        cb(err, doc);
-      });
-    },
+        form.parse(req, function(err, fields, files) {
+          cb(err, fields, files);
+        });
+      },
+      function(fields, files, cb) {
+        listings.insert({
+          title: _.first(fields.title) || '',
+          description: _.first(fields.description) || '',
+          size: _.first(fields.size) || '',
+          condition: _.first(fields.condition) || '',
+          brand: _.first(fields.brand) || '',
+          color: _.first(fields.color) || '',
+          userId: req.user.id,
+          createdAt: new Date()
+        }, function(err, doc) {
+          cb(err, doc);
+        });
+      },
     ], function(err, doc) {
       if (err) {
         return next(err);

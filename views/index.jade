@@ -3,4 +3,8 @@ extend layout
 block content
   .row
     .col-md-4
-      p Recent Listings
+      h1 Recent Listings
+      ul
+        - each listing in listings
+          li
+            a(href='/listings/' + listing._id)= listing.title
