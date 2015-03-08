@@ -1,4 +1,4 @@
-mixin text-form-group(fieldname, label)
+mixin text-form-group(fieldname, label, val)
   .form-group
     label(for=fieldname)= label
-    input.form-control(type="text" name=fieldname placeholder=label)
+    input.form-control(type="text" name=fieldname placeholder=label, value=val)

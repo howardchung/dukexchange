@@ -1,14 +1,7 @@
 extends ../layout
-include ../mixins/form-field-helpers
 
 block content
   .row
     .col-xs-12.col-md-8
       form(method='POST', action='/listings', enctype='multipart/form-data')
-        +text-form-group('title', 'Title')
-        +text-form-group('description', 'Description')
-        +text-form-group('size', 'Size')
-        +text-form-group('condition', 'Condition')
-        +text-form-group('brand', 'Brand')
-        +text-form-group('color', 'Color')
-        button.btn.btn-default(type='submit') Submit
+        include _form

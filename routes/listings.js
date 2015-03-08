@@ -8,9 +8,9 @@ module.exports = function(db) {
   var listings = db.get('listings');
 
   router.post('/', requireUser, function(req, res, next) {
-    var form = new multiparty.Form();
     async.waterfall([
       function(cb) {
+        var form = new multiparty.Form();
         form.parse(req, function(err, fields, files) {
           cb(err, fields, files);
         });
@@ -39,6 +39,55 @@ module.exports = function(db) {
 
   router.get('/new', requireUser, function(req, res, next) {
     res.render('listings/new', {
+    });
+  });
+
+  router.get('/:listing_id/edit', requireUser, function(req, res, next) {
+    listings.findOne({
+      _id: req.params.listing_id
+    }, function(err, listing) {
+      if (listing.userId !== req.user.id) {
+        res.redirect('/listings/' + listing._id);
+      }
+      res.render('listings/edit', {
+        listing: listing
+      });
+    });
+  });
+
+  router.post('/:listing_id', requireUser, function(req, res, next) {
+    async.waterfall([
+      function(cb) {
+        var form = new multiparty.Form();
+        form.parse(req, function(err, fields, files) {
+          cb(err, fields, files);
+        });
+      },
+      function(fields, files, cb) {
+        listings.findAndModify(
+          {
+            _id: req.params.listing_id,
+            userId: req.user.id
+          },
+          {
+            $set: {
+              title: _.first(fields.title) || '',
+              description: _.first(fields.description) || '',
+              size: _.first(fields.size) || '',
+              condition: _.first(fields.condition) || '',
+              brand: _.first(fields.brand) || '',
+              color: _.first(fields.color) || ''
+            }
+          }, function(err, listing) {
+            cb(err, listing);
+          }
+        );
+      }
+    ], function(err, listing) {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/listings/' + req.params.listing_id);
     });
   });
 
