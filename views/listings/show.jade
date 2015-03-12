@@ -7,11 +7,15 @@ mixin listing-tr(fieldname, label, listing)
 
 block content
   .row
-    .col-xs-12.col-md-8
+    .col-xs-12
       h1= listing.title
+  .row
+    .col-xs-12.col-md-8
       p= listing.description
       table.table
         +listing-tr('size', 'Size', listing)
         +listing-tr('condition', 'Condition', listing)
         +listing-tr('brand', 'Brand', listing)
         +listing-tr('color', 'Color', listing)
+    .col-xs-12.col-md-4
+      img(src='data:image/jpg;base64,' + listing.image)

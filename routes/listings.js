@@ -4,6 +4,7 @@ var async = require('async');
 var _ = require('underscore');
 var requireUser = require('../lib/helpers').requireUser;
 var attributes = require('../config/attributes/clothing.json');
+var gm = require('gm').subClass({imageMagick: true});
 
 module.exports = function(db) {
   var listings = db.get('listings');
@@ -11,12 +12,27 @@ module.exports = function(db) {
   router.post('/', requireUser, function(req, res, next) {
     async.waterfall([
       function(cb) {
-        var form = new multiparty.Form();
+        var form = new multiparty.Form({uploadDir: './tmp'});
         form.parse(req, function(err, fields, files) {
           cb(err, fields, files);
         });
       },
       function(fields, files, cb) {
+        if (files) {
+          gm(files.image[0].path)
+            .resize(400)
+            .toBuffer('jpg', function(err, buf) {
+              if (err) {
+                return next(err);
+              }
+              cb(null, fields, buf.toString('base64'));
+            });
+        }
+        else {
+          cb(null, fields, null);
+        }
+      },
+      function(fields, img, cb) {
         listings.insert({
           title: _.first(fields.title) || '',
           description: _.first(fields.description) || '',
@@ -27,6 +43,7 @@ module.exports = function(db) {
           category: _.first(fields.category) || '',
           price: _.first(fields.price) || '',
           userId: req.user.id,
+          image: img,
           createdAt: new Date()
         }, function(err, doc) {
           cb(err, doc);

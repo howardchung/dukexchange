@@ -14,11 +14,14 @@ include ../mixins/form-field-helpers
     +text-form-group('color', 'Color', listing.color)
   .col-xs-12.col-md-4
     .form-group
+      label(for='image') Image
+      input#image(type='file' name='image')
+    .form-group
       label(for='description') Description
-      textarea.form-control(id='description' name='description')= listing.description
+      textarea#description.form-control(name='description')= listing.description
     .form-group
       label(for='price') Asking price
       .input-group
         span.input-group-addon $
-        input.form-control(type="text" id='price' name='price' placeholder='0.00' value=listing.price)
+        input#price.form-control(type="text" name='price' placeholder='0.00' value=listing.price)
 button.btn.btn-default(type='submit') Submit
