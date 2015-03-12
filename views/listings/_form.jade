@@ -3,8 +3,8 @@ include ../mixins/form-field-helpers
 - listing = listing || {}
 +text-form-group('title', 'Title', listing.title)
 +text-form-group('description', 'Description', listing.description)
-+text-form-group('size', 'Size', listing.size)
-+text-form-group('condition', 'Condition', listing.condition)
++dropdown-form-group('size', 'Size', attributes['size'])
++dropdown-form-group('condition', 'Condition', attributes['condition'])
 +text-form-group('brand', 'Brand', listing.brand)
 +text-form-group('color', 'Color', listing.color)
 button.btn.btn-default(type='submit') Submit

@@ -3,6 +3,7 @@ var multiparty = require('multiparty');
 var async = require('async');
 var _ = require('underscore');
 var requireUser = require('../lib/helpers').requireUser;
+var attributes = require('../config/attributes/clothing.json');
 
 module.exports = function(db) {
   var listings = db.get('listings');
@@ -39,6 +40,7 @@ module.exports = function(db) {
 
   router.get('/new', requireUser, function(req, res, next) {
     res.render('listings/new', {
+      attributes: attributes
     });
   });
 
@@ -50,7 +52,8 @@ module.exports = function(db) {
         res.redirect('/listings/' + listing._id);
       }
       res.render('listings/edit', {
-        listing: listing
+        listing: listing,
+        attributes: attributes
       });
     });
   });
