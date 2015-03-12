@@ -1,10 +1,24 @@
 include ../mixins/form-field-helpers
 
 - listing = listing || {}
-+text-form-group('title', 'Title', listing.title)
-+text-form-group('description', 'Description', listing.description)
-+dropdown-form-group('size', 'Size', attributes['size'])
-+dropdown-form-group('condition', 'Condition', attributes['condition'])
-+text-form-group('brand', 'Brand', listing.brand)
-+text-form-group('color', 'Color', listing.color)
+.row
+  .col-xs-12
+    +text-form-group('title', 'Title', listing.title)
+.row
+  .col-xs-12.col-md-4
+    +text-form-group('category', 'Category', listing.category)
+  .col-xs-12.col-md-4
+    +dropdown-form-group('condition', 'Condition', attributes['condition'])
+    +text-form-group('brand', 'Brand', listing.brand)
+    +dropdown-form-group('size', 'Size', attributes['size'])
+    +text-form-group('color', 'Color', listing.color)
+  .col-xs-12.col-md-4
+    .form-group
+      label(for='description') Description
+      textarea.form-control(id='description' name='description')= listing.description
+    .form-group
+      label(for='price') Asking price
+      .input-group
+        span.input-group-addon $
+        input.form-control(type="text" id='price' name='price' placeholder='0.00' value=listing.price)
 button.btn.btn-default(type='submit') Submit

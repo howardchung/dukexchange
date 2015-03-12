@@ -24,6 +24,8 @@ module.exports = function(db) {
           condition: _.first(fields.condition) || '',
           brand: _.first(fields.brand) || '',
           color: _.first(fields.color) || '',
+          category: _.first(fields.category) || '',
+          price: _.first(fields.price) || '',
           userId: req.user.id,
           createdAt: new Date()
         }, function(err, doc) {
@@ -79,7 +81,9 @@ module.exports = function(db) {
               size: _.first(fields.size) || '',
               condition: _.first(fields.condition) || '',
               brand: _.first(fields.brand) || '',
-              color: _.first(fields.color) || ''
+              color: _.first(fields.color) || '',
+              category: _.first(fields.category) || '',
+              price: _.first(fields.price) || '',
             }
           }, function(err, listing) {
             cb(err, listing);

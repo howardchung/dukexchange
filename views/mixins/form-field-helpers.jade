@@ -1,12 +1,12 @@
 mixin text-form-group(fieldname, label, val)
   .form-group
     label(for=fieldname)= label
-    input.form-control(type="text" name=fieldname placeholder=label value=val)
+    input.form-control(type="text" id=fieldname name=fieldname placeholder=label value=val)
 
 mixin dropdown-form-group(fieldname, label, options)
   .form-group
     label(for=fieldname)= label
-    select.form-control(name=fieldname)
+    select.form-control(id=fieldname name=fieldname)
       option
       - each option in options
         option(value=option)= option
