@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nf start",
+    "prod": "npm install && nf export -o /etc/init/ && restart foreman",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -22,6 +23,7 @@
     "multiparty": "^4.1.1",
     "passport": "^0.2.1",
     "passport-google-oauth": "^0.1.5",
-    "underscore": "^1.8.2"
+    "underscore": "^1.8.2",
+    "nf": "*"
   }
 }
