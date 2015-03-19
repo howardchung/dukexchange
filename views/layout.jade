@@ -15,7 +15,7 @@ html(lang='en')
             a(href='/', class = 'navbar-brand') Duke Exchange
           ul.nav.navbar-nav
             li
-              a(href="#") About
+              a(href="/listings/new") New Listing
           ul.nav.navbar-nav.navbar-right
             if user
               li
@@ -26,6 +26,3 @@ html(lang='en')
               li
                 a(href="/auth/google") Login
       block content
-      hr
-      footer
-        div footer
