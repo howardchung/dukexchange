@@ -5,6 +5,7 @@ var _ = require('underscore');
 var requireUser = require('../lib/helpers').requireUser;
 var attributes = require('../config/attributes/clothing.json');
 var gm = require('gm').subClass({imageMagick: true});
+var chance = new (require('chance')).Chance();
 
 module.exports = function(db) {
   var listings = db.get('listings');
@@ -19,20 +20,22 @@ module.exports = function(db) {
       },
       function(fields, files, cb) {
         if (files) {
-          gm(files.image[0].path)
+          var path = files.image[0].path;
+          // TODO: make this env variable
+          var rand = chance.string({length: 10, pool: 'abcdefghijklmnopqrstuvwxyz'});
+          var newPath = '/image/' + rand + '-' + files.image[0].originalFilename;
+          // TODO: delete tmp image
+          gm(path)
             .resize(400)
-            .toBuffer('jpg', function(err, buf) {
-              if (err) {
-                return next(err);
-              }
-              cb(null, fields, buf.toString('base64'));
+            .write('.' + newPath, function(e) {
+              cb(null, fields, newPath);
             });
         }
         else {
           cb(null, fields, null);
         }
       },
-      function(fields, img, cb) {
+      function(fields, imgPath, cb) {
         listings.insert({
           title: _.first(fields.title) || '',
           description: _.first(fields.description) || '',
@@ -43,7 +46,7 @@ module.exports = function(db) {
           category: _.first(fields.category) || '',
           price: _.first(fields.price) || '',
           userId: req.user.id,
-          image: img,
+          images: [imgPath],
           createdAt: new Date()
         }, function(err, doc) {
           cb(err, doc);

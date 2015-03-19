@@ -20,6 +20,7 @@ var multiparty = require('multiparty');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 app.set('view engine', 'jade');
 app.use('/public', express.static(__dirname + '/public'));
+app.use('/image', express.static(__dirname + '/image'));
 app.use(session({
     secret: process.env.SESSION_SECRET
 }));

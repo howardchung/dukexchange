@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^0.9.0",
+    "chance": "^0.7.3",
     "cookie-session": "^1.1.0",
     "dotenv": "^0.5.1",
     "express": "^4.11.2",
@@ -23,7 +24,6 @@
     "multiparty": "^4.1.1",
     "passport": "^0.2.1",
     "passport-google-oauth": "^0.1.5",
-    "underscore": "^1.8.2",
-    "nf": "*"
+    "underscore": "^1.8.2"
   }
 }
