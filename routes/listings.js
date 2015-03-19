@@ -6,6 +6,8 @@ var requireUser = require('../lib/helpers').requireUser;
 var attributes = require('../config/attributes/clothing.json');
 var gm = require('gm').subClass({imageMagick: true});
 var chance = new (require('chance')).Chance();
+var imageDirectory = process.env.IMAGE_DIRECTORY || './image';
+var imagePath = process.env.IMAGE_PATH || '/image';
 
 module.exports = function(db) {
   var listings = db.get('listings');
@@ -21,14 +23,13 @@ module.exports = function(db) {
       function(fields, files, cb) {
         if (files) {
           var path = files.image[0].path;
-          // TODO: make this env variable
           var rand = chance.string({length: 10, pool: 'abcdefghijklmnopqrstuvwxyz'});
-          var newPath = '/image/' + rand + '-' + files.image[0].originalFilename;
+          var newFilename = rand + '-' + files.image[0].originalFilename;
           // TODO: delete tmp image
           gm(path)
             .resize(400)
-            .write('.' + newPath, function(e) {
-              cb(null, fields, newPath);
+            .write(imageDirectory + '/' + newFilename, function(e) {
+              cb(null, fields, imagePath + '/' + newFilename);
             });
         }
         else {
