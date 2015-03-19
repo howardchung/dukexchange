@@ -5,6 +5,7 @@ var session = require('cookie-session');
 var app = express();
 var moment = require('moment');
 var db = require('monk')(process.env.MONGOLAB_URI || "mongodb://localhost/dukeexchange");
+var imageDirectory = process.env.IMAGE_DIRECTORY) || __dirname + '/image';
 var users = db.get("users");
 users.index('id', {
     unique: true
@@ -20,10 +21,7 @@ var multiparty = require('multiparty');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 app.set('view engine', 'jade');
 app.use('/public', express.static(__dirname + '/public'));
-var imagePath = process.env.IMAGE_PATH || '/path';
-var imageDirectory = express.static(process.env.IMAGE_DIRECTORY) ||
-  express.static(__dirname + '/image');
-app.use(imagePath, imageDirectory);
+app.use("/images", express.static(imageDirectory));
 app.use(session({
     secret: process.env.SESSION_SECRET
 }));
