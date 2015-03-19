@@ -7,7 +7,6 @@ var attributes = require('../config/attributes/clothing.json');
 var gm = require('gm').subClass({imageMagick: true});
 var chance = new (require('chance')).Chance();
 var imageDirectory = process.env.IMAGE_DIRECTORY || './image';
-var imagePath = process.env.IMAGE_PATH || '/image';
 
 module.exports = function(db) {
   var listings = db.get('listings');
@@ -22,6 +21,7 @@ module.exports = function(db) {
       },
       function(fields, files, cb) {
         if (files) {
+          //todo support multiple images
           var path = files.image[0].path;
           var rand = chance.string({length: 10, pool: 'abcdefghijklmnopqrstuvwxyz'});
           var newFilename = rand + '-' + files.image[0].originalFilename;
@@ -29,7 +29,7 @@ module.exports = function(db) {
           gm(path)
             .resize(400)
             .write(imageDirectory + '/' + newFilename, function(e) {
-              cb(e, fields, imagePath + '/' + newFilename);
+              cb(e, fields, newFilename);
             });
         }
         else {
