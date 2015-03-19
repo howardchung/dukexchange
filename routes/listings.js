@@ -15,7 +15,7 @@ module.exports = function(db) {
   router.post('/', requireUser, function(req, res, next) {
     async.waterfall([
       function(cb) {
-        var form = new multiparty.Form({uploadDir: './tmp'});
+        var form = new multiparty.Form({uploadDir: '/tmp'});
         form.parse(req, function(err, fields, files) {
           cb(err, fields, files);
         });
@@ -29,7 +29,7 @@ module.exports = function(db) {
           gm(path)
             .resize(400)
             .write(imageDirectory + '/' + newFilename, function(e) {
-              cb(null, fields, imagePath + '/' + newFilename);
+              cb(e, fields, imagePath + '/' + newFilename);
             });
         }
         else {
