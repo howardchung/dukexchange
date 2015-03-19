@@ -5,7 +5,7 @@ var session = require('cookie-session');
 var app = express();
 var moment = require('moment');
 var db = require('monk')(process.env.MONGOLAB_URI || "mongodb://localhost/dukeexchange");
-var imageDirectory = process.env.IMAGE_DIRECTORY) || __dirname + '/image';
+var imageDirectory = process.env.IMAGE_DIRECTORY || __dirname + '/image';
 var users = db.get("users");
 users.index('id', {
     unique: true
