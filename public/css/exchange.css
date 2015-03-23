@@ -38,3 +38,13 @@ ul {
   text-shadow: 1px 1px 2px #363a3f;
   font-weight: 500;
 }
+
+.navbar-pic {
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  height: 30px;
+  margin-top: -6px;
+  position: absolute;
+  left: -25px;
+}

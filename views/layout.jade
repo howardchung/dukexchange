@@ -4,25 +4,10 @@ html(lang='en')
     title Duke Exchange
     meta(charset='utf-8')
     meta(name="viewport", content="initial-scale=1")
-    
+
     link(rel="stylesheet", href='//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.min.css')
     link(rel='stylesheet', href='/public/css/exchange.css')
   body
+    include partials/_navbar
     .container
-      nav.navbar.navbar-default
-        .container-fluid
-          .navbar-header
-            a(href='/', class = 'navbar-brand') Duke Exchange
-          ul.nav.navbar-nav
-            li
-              a(href="/listings/new") New Listing
-          ul.nav.navbar-nav.navbar-right
-            if user
-              li
-                a(href="/users/"+user.id)=user.name
-              li 
-                a(href="/logout") Logout
-            else
-              li
-                a(href="/auth/google") Login
       block content
