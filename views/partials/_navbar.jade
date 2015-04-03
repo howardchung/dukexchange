@@ -6,7 +6,7 @@ nav.navbar.navbar-default
       li
         a(href="/listings/new") New Listing
     ul.nav.navbar-nav.navbar-right
-      if user
+      if user.id
         li
           a(href="/users/"+user.id)
             img.navbar-pic(src=user.picture)
