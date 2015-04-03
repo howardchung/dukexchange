@@ -67,7 +67,7 @@ app.get('/logout', function(req, res) {
 
 // Middleware to include user on every response
 app.use(function(req, res, next) {
-  res.locals.user = req.user;
+  res.locals.user = req.user || {};
   next();
 });
 

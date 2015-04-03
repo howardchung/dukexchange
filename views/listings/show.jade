@@ -1,21 +1,29 @@
 extends ../layout
 
 mixin listing-tr(fieldname, label, listing)
-  tr
-    td= label
-    td= listing[fieldname]
+  - if (listing[fieldname])
+    tr
+      td.listing-detail-td.listing-detail-label= label
+      td.listing-detail-td(class="listing-detail-#{fieldname}")= listing[fieldname]
 
 block content
   .row
-    .col-xs-12
-      h1= listing.title
-  .row
-    .col-xs-12.col-md-8
-      p= listing.description
-      table.table
+    .col-xs-12.col-md-6
+      img.listing-detail-image(src='/images/#{listing.images[0]}')
+    .col-xs-12.col-md-6
+      h1.listing-detail-title= listing.title
+      table.table.listing-detail-table
+        +listing-tr('price', 'Price', listing)
         +listing-tr('size', 'Size', listing)
         +listing-tr('condition', 'Condition', listing)
         +listing-tr('brand', 'Brand', listing)
         +listing-tr('color', 'Color', listing)
-    .col-xs-12.col-md-4
-      img(src='/images/#{listing.images[0]}')
+      - if (listing.description)
+        p= listing.description
+      ul.listing-detail-action-list
+        li.listing-detail-action
+          a.btn.btn-primary(href='#') Message Seller
+      - if (user.id === listing.userId)
+        ul.listing-detail-action-list
+          li.listing-detail-action
+            a.btn.btn-default(href='#{listing._id}/edit') Edit Listing
