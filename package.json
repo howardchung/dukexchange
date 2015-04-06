@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nf start",
-    "prod": "npm install && nf export -o /etc/init/ && restart foreman",
+    "prod": "nf export -o /etc/init/ && restart foreman",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,16 +14,15 @@
     "async": "^0.9.0",
     "chance": "^0.7.3",
     "cookie-session": "^1.1.0",
-    "dotenv": "^0.5.1",
-    "express": "^4.11.2",
+    "express": "^4.12.3",
     "foreman": "^1.3.0",
     "gm": "^1.17.0",
     "jade": "^1.9.2",
     "moment": "^2.9.0",
-    "monk": "^0.9.1",
+    "monk": "^1.0.1",
     "multiparty": "^4.1.1",
     "passport": "^0.2.1",
-    "passport-google-oauth": "^0.1.5",
-    "underscore": "^1.8.2"
+    "passport-google-oauth": "^0.2.0",
+    "underscore": "^1.8.3"
   }
 }
