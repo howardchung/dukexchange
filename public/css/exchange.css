@@ -5,21 +5,25 @@ ul {
 .grid-listing {
   padding-left: 0px;
   overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .grid-listing-item {
-  float: left;
-  width: 25%;
+  flex: 1;
+  border: 1px solid #eee;
+  margin: 15px;
+  min-width: 250px;
+  max-width: 250px;
 }
 
 .grid-listing-image {
-  width: 250px;
   height: 300px;
   overflow: hidden;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  margin: 15px auto;
   position: relative;
 }
 

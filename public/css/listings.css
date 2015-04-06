@@ -1,0 +1,36 @@
+.listing-detail-image {
+  width: 100%;
+}
+
+.listing-detail-title {
+  margin-top: 0px;
+}
+
+.listing-detail-table .listing-detail-td {
+  border-top: none;
+  padding: 4px;
+  font-weight: 500;
+}
+
+.listing-detail-table .listing-detail-td:first-child {
+  padding-left: 0px;
+}
+
+.listing-detail-label {
+  color: #555;
+  width: 20%;
+}
+
+.listing-detail-price:before {
+  content: '$';
+  color: #555;
+}
+
+.listing-detail-action-list {
+  padding-left: 0px;
+}
+
+.listing-detail-action {
+  margin-left: 3px;
+  display: inline;
+}

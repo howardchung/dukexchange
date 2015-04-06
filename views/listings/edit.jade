@@ -3,6 +3,7 @@ extends ../layout
 block content
   .row
     .col-xs-12
-      h1= 'Edit ' + listing.title
+      h1 Edit 
+        a(href="/listings/#{listing._id}")= listing.title
       form(method='POST', action='/listings/' + listing._id, enctype='multipart/form-data')
         include _form
