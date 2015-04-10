@@ -27,3 +27,10 @@ block content
         ul.listing-detail-action-list
           li.listing-detail-action
             a.btn.btn-default(href='#{listing._id}/edit') Edit Listing
+      form(action="/offers" method="POST" enctype='multipart/form-data')
+        input(type="hidden" name="listing_id" value=listing._id)
+        .form-group
+          label(for='value') Offer
+          .input-group
+            span.input-group-addon $
+            input#offer.form-control(type="text" name='value' placeholder='0.00' value=listing.price)

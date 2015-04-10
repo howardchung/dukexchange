@@ -46,6 +46,11 @@ passport.use(new GoogleStrategy({
         done(err, profile);
     });
 }));
+// Middleware to include user on every response
+app.use(function(req, res, next) {
+    res.locals.user = req.user;
+    next();
+});
 app.get('/auth/google', passport.authenticate('google', {
     scope: 'openid email'
 }));
@@ -58,12 +63,8 @@ app.get('/logout', function(req, res) {
     req.session = null;
     res.redirect('/');
 });
-// Middleware to include user on every response
-app.use(function(req, res, next) {
-    res.locals.user = req.user;
-    next();
-});
 app.use('/', routes(db));
+//error handlers
 app.use(function(req, res, next) {
     var err = new Error("Not Found");
     err.status = 404;
@@ -74,6 +75,7 @@ app.use(function(err, req, res, next) {
     console.log(err);
     next(err);
 });
+//start listening
 var server = app.listen(process.env.PORT || 5000, function() {
     var host = server.address().address;
     var port = server.address().port;

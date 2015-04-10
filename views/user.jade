@@ -1,9 +1,10 @@
 extend layout
 
 block content
+  pre=JSON.stringify(user)
   .row
     .col-xs-12
-      h1= user.name
+      h1=user.name.givenName
   .row
     .col-xs-12.col-md-12
-      img(src=user.picture)
+      img(src=user.image.url)

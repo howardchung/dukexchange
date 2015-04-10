@@ -23,7 +23,9 @@ module.exports = function(db) {
         });
       },
       function(fields, files, cb) {
-        if (files) {
+        //TODO files.image[0] still exists if no image uploaded, but gm will crash
+        //could check size
+        if (files && files.image[0].size) {
           //TODO: support multiple images
           var path = files.image[0].path;
           var rand = chance.string({
@@ -31,7 +33,7 @@ module.exports = function(db) {
             pool: 'abcdefghijklmnopqrstuvwxyz'
           });
           var newFilename = rand + '-' + files.image[0].originalFilename;
-          // TODO: delete tmp image
+          // TODO: delete tmp image 
           gm(path).resize(400).write(imageDirectory + '/' + newFilename, function(e) {
             cb(e, fields, newFilename);
           });

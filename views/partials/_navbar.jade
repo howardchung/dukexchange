@@ -8,9 +8,9 @@ nav.navbar.navbar-default
     ul.nav.navbar-nav.navbar-right
       if user
         li
-          a(href="/users/"+user.id)
-            img.navbar-pic(src=user.picture)
-            = user.name
+          a(href="/users/"+user._id)
+            img.navbar-pic(src=user.image.url)
+            =user.name.givenName
         li
           a(href="/logout") Logout
       else
