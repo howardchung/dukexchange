@@ -40,15 +40,21 @@ module.exports = function(db) {
       //TODO: user pages should display that user's listings
       //also get the offers on those listings
       //also get the offers this user has made
-      //user profile lists offers made and offers received
-      //or just let new offers come in, and the owner can delete the listing at will?  no feedback cycle for offerers in that case
+      //let owner delete the listing at will?  no feedback cycle for offerers in that case
       //listing owner can see emails of all offerers, up to user to contact and delete listing when item is sold
       //offers made by this user
+      //TODO: denormalize!  store offers as an array within each listing
+      //offers have no meaning without a listing
+      //to get a user's outstanding offers, need to do listings.offers.user_id
+      //might need an index on this field
+      //if this were SQL we'd use separate tables and join
       offers.find({
         user_id: user._id
       }, function(err, docs) {
-        res.render("user", {});
-      })
+        res.locals.user.madeOffers = docs;
+        //TODO get email for each offer
+        res.render("user");
+      });
     });
   });
   router.post("/offers", function(req, res, next) {
@@ -57,9 +63,8 @@ module.exports = function(db) {
       if (err) {
         return next(err);
       }
-      //TODO: implement
       //offers are stored in their own collection
-      //listing pages should embed an offer form that prepopulates listing_id
+      //listing pages embed an offer form that prepopulates listing_id
       //offers get created on POST /offers
       //get listing id/offer value from POST body
       //user id autofilled by currently logged in user
@@ -78,8 +83,8 @@ module.exports = function(db) {
         if (err) {
           return next(err);
         }
-        //offer made, redirect the user to the listing?
-        res.redirect("/listings/" + fields.listing_id[0]);
+        //offer made, redirect the user to their home page?
+        res.redirect("/users/" + res.locals.user._id);
       });
     });
   });
