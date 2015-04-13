@@ -34,11 +34,9 @@ module.exports = function(db) {
             var newFilename = rand + '-' + image.originalFilename;
             // TODO: delete tmp image
             return function(cb) {
-              gm(path)
-                .resize(400)
-                .write(imageDirectory + '/' + newFilename, function(e) {
-                  cb(e, newFilename);
-                });
+              gm(path).resize(400).write(imageDirectory + '/' + newFilename, function(e) {
+                cb(e, newFilename);
+              });
             };
           });
           async.parallel(resizeFuns, function(e, filenames) {
@@ -133,8 +131,30 @@ module.exports = function(db) {
       if (err) {
         return next(err);
       }
-      res.render('listings/show', {
-        listing: l
+      //listing owner can see emails of all offerers, up to user to contact and delete listing when item is sold
+      console.log(l._id)
+      db.get('offers').find({
+        listing_id: req.params.listing_id
+      }, function(err, docs) {
+        if (err) {
+          return next(err);
+        }
+        console.log(docs);
+        async.each(docs, function(offer, cb) {
+          db.get('users').findById(offer.user_id, function(err, user) {
+            //get email for each offer
+            offer.email = user.email;
+            cb(err);
+          });
+        }, function(err) {
+          if (err) {
+            return next(err);
+          }
+          l.offers = docs;
+          res.render('listings/show', {
+            listing: l
+          });
+        });
       });
     });
   });

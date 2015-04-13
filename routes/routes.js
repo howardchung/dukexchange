@@ -37,23 +37,28 @@ module.exports = function(db) {
       if (err) {
         return next(err);
       }
-      //TODO: user pages should display that user's listings
-      //also get the offers on those listings
-      //also get the offers this user has made
-      //let owner delete the listing at will?  no feedback cycle for offerers in that case
-      //listing owner can see emails of all offerers, up to user to contact and delete listing when item is sold
-      //offers made by this user
-      //TODO: denormalize!  store offers as an array within each listing
-      //offers have no meaning without a listing
-      //to get a user's outstanding offers, need to do listings.offers.user_id
-      //might need an index on this field
-      //if this were SQL we'd use separate tables and join
       offers.find({
         user_id: user._id
       }, function(err, docs) {
-        res.locals.user.madeOffers = docs;
-        //TODO get email for each offer
-        res.render("user");
+        if (err) {
+          return next(err);
+        }
+        //offers this user has made
+        async.each(docs, function(offer, cb) {
+          listings.findOne({
+            _id: offer.listing_id
+          }, function(err, l) {
+            //get listing name for each
+            offer.title = l.title;
+            cb(err);
+          });
+        }, function(err) {
+          if (err) {
+            return next(err);
+          }
+          res.locals.user.madeOffers = docs;
+          res.render("user");
+        });
       });
     });
   });

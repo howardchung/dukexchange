@@ -23,10 +23,6 @@ block content
       ul.listing-detail-action-list
         li.listing-detail-action
           a.btn.btn-primary(href='#') Message Seller
-      - if (user.id === listing.userId)
-        ul.listing-detail-action-list
-          li.listing-detail-action
-            a.btn.btn-default(href='#{listing._id}/edit') Edit Listing
       form(action="/offers" method="POST" enctype='multipart/form-data')
         input(type="hidden" name="listing_id" value=listing._id)
         .form-group
@@ -34,3 +30,8 @@ block content
           .input-group
             span.input-group-addon $
             input#offer.form-control(type="text" name='value' placeholder='0.00' value=listing.price)
+      if (user.id === listing.userId)
+        ul.listing-detail-action-list
+          li.listing-detail-action
+            a.btn.btn-default(href='#{listing._id}/edit') Edit Listing
+        pre=JSON.stringify(listing.offers)
