@@ -14,9 +14,6 @@ include ../mixins/form-field-helpers
     +text-form-group('color', 'Color', listing.color)
   .col-xs-12.col-md-4
     .form-group
-      label(for='image') Image
-      input#image(type='file' name='image')
-    .form-group
       label(for='description') Description
       textarea#description.form-control(name='description')= listing.description
     .form-group
@@ -24,4 +21,6 @@ include ../mixins/form-field-helpers
       .input-group
         span.input-group-addon $
         input#price.form-control(type="text" name='price' placeholder='0.00' value=listing.price)
+    .form-group
+      #dropzone-preview Upload images
 button.btn.btn-default(type='submit') Submit

@@ -7,12 +7,14 @@
     "start": "nf start",
     "dev": "nf -j Procfile.dev start",
     "prod": "nf export -o /etc/init/ && restart foreman",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "bower install"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "async": "^0.9.0",
+    "bower": "^1.4.1",
     "chance": "^0.7.3",
     "cookie-session": "^1.1.0",
     "express": "^4.12.3",

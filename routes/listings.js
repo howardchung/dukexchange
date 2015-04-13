@@ -23,26 +23,33 @@ module.exports = function(db) {
         });
       },
       function(fields, files, cb) {
-        //TODO files.image[0] still exists if no image uploaded, but gm will crash
-        //could check size
-        if (files && files.image[0].size) {
-          //TODO: support multiple images
-          var path = files.image[0].path;
-          var rand = chance.string({
-            length: 10,
-            pool: 'abcdefghijklmnopqrstuvwxyz'
+        if (files) {
+          var images = _.flatten(_.values(files));
+          var resizeFuns = images.map(function(image) {
+            var path = image.path;
+            var rand = chance.string({
+              length: 10,
+              pool: 'abcdefghijklmnopqrstuvwxyz'
+            });
+            var newFilename = rand + '-' + image.originalFilename;
+            // TODO: delete tmp image
+            return function(cb) {
+              gm(path)
+                .resize(400)
+                .write(imageDirectory + '/' + newFilename, function(e) {
+                  cb(e, newFilename);
+                });
+            };
           });
-          var newFilename = rand + '-' + files.image[0].originalFilename;
-          // TODO: delete tmp image 
-          gm(path).resize(400).write(imageDirectory + '/' + newFilename, function(e) {
-            cb(e, fields, newFilename);
+          async.parallel(resizeFuns, function(e, filenames) {
+            return cb(e, fields, filenames);
           });
         }
         else {
           cb(null, fields, null);
         }
       },
-      function(fields, imgPath, cb) {
+      function(fields, imgPaths, cb) {
         listings.insert({
           title: _.first(fields.title) || '',
           description: _.first(fields.description) || '',
@@ -53,7 +60,7 @@ module.exports = function(db) {
           category: _.first(fields.category) || '',
           price: _.first(fields.price) || '',
           userId: req.user.id,
-          images: [imgPath],
+          images: imgPaths,
           createdAt: new Date()
         }, function(err, doc) {
           cb(err, doc);
@@ -63,7 +70,7 @@ module.exports = function(db) {
       if (err) {
         return next(err);
       }
-      return res.redirect('/listings/' + doc._id);
+      return res.send('/listings/' + doc._id);
     });
   });
   router.get('/new', requireUser, function(req, res, next) {
