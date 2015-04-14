@@ -28,10 +28,11 @@ passport.serializeUser(function(user, done) {
 });
 passport.deserializeUser(function(obj, done) {
     //locate user in db using google id
+    //console.log(obj);
     users.findOne({
         id: obj.id
     }, function(err, user) {
-        done(null, user);
+        done(err, user);
     });
 });
 passport.use(new GoogleStrategy({
@@ -48,7 +49,7 @@ passport.use(new GoogleStrategy({
     }, {
         upsert: true
     }, function(err) {
-        done(err);
+        done(err, profile);
     });
 }));
 // Middleware to include user on every response
