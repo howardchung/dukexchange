@@ -6,6 +6,7 @@ $(function() {
     uploadMultiple: true,
     previewsContainer: '#dropzone-preview',
     maxFiles: 4,
+    parallelUploads: 4,
     paramName: 'image',
     init: function() {
       var dropzone = this;

@@ -6,10 +6,43 @@ mixin listing-tr(fieldname, label, listing)
       td.listing-detail-td.listing-detail-label= label
       td.listing-detail-td(class="listing-detail-#{fieldname}")= listing[fieldname]
 
+mixin image1(images)
+  .listing-detail-image(style="background-image: url('/images/#{listing.images[0]}')")
+
+mixin image2(images)
+  .listing-detail-images-column
+    .listing-detail-image(style="background-image: url('/images/#{listing.images[0]}')")
+  .listing-detail-images-column
+    .listing-detail-image(style="background-image: url('/images/#{listing.images[1]}')")
+
+mixin image3(images)
+  .listing-detail-image(style="background-image: url('/images/#{listing.images[0]}')")
+  .listing-detail-images-column
+    .listing-detail-image(style="background-image: url('/images/#{listing.images[1]}')")
+    .listing-detail-image(style="background-image: url('/images/#{listing.images[2]}')")
+
+mixin image4(images)
+  .listing-detail-images-column
+    .listing-detail-image(style="background-image: url('/images/#{listing.images[0]}')")
+    .listing-detail-image(style="background-image: url('/images/#{listing.images[1]}')")
+  .listing-detail-images-column
+    .listing-detail-image(style="background-image: url('/images/#{listing.images[2]}')")
+    .listing-detail-image(style="background-image: url('/images/#{listing.images[3]}')")
+
 block content
   .row
     .col-xs-12.col-md-6
-      img.listing-detail-image(src='/images/#{listing.images[0]}')
+      .listing-detail-images-root
+        - if (listing.images.length <= 1)
+          +image1(listing.images)
+        - else if (listing.images.length == 2)
+          +image2(listing.images)
+        - else if (listing.images.length == 3)
+          +image3(listing.images)
+        - else if (listing.images.length == 4)
+          +image4(listing.images)
+        - else
+          +image4(listing.images)
     .col-xs-12.col-md-6
       h1.listing-detail-title= listing.title
       table.table.listing-detail-table
