@@ -4,4 +4,7 @@ node_modules
 tmp
 image
 
-/public/bower_components
+/src/bower_components
+
+/public/css
+/public/js

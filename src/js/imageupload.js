@@ -1,3 +1,5 @@
+var $ = require('jquery/dist/jquery');
+var Dropzone = require('dropzone/dist/dropzone');
 $(function() {
   var $form = $('form');
   var dropzone = new Dropzone('form', {
