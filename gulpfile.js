@@ -27,8 +27,9 @@ gulp.task('js:dev', function() {
     .pipe(gulp.dest('public/js'));
 });
 
-gulp.task('watch', ['style', 'js:dev'], function() {
+gulp.task('watch', ['style'], function() {
   gulp.watch('./src/stylesheets/**/*.scss', ['style']);
+  gulp.start('js:dev');
 });
 
 gulp.task('default', ['style', 'js:build'], function() {
