@@ -8,7 +8,9 @@ var webpackConfig = require('./webpack.config.js');
 
 gulp.task('style', function() {
   return gulp.src('./src/stylesheets/*.scss')
-    .pipe(sass())
+    .pipe(sass({
+      errLogToConsole: true
+    }))
     .pipe(gulp.dest('public/css'));
 });
 
