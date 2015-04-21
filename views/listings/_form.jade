@@ -22,5 +22,6 @@ include ../mixins/form-field-helpers
         span.input-group-addon $
         input#price.form-control(type="text" name='price' placeholder='0.00' value=listing.price)
     .form-group
-      #dropzone-preview Upload images
+      #dropzone-preview
+        .dz-message Drag Images Here
 button.btn.btn-default(type='submit') Submit

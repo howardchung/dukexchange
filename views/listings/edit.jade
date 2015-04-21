@@ -7,3 +7,6 @@ block content
         a(href="/listings/#{listing._id}")= listing.title
       form(method='POST', action='/listings/' + listing._id, enctype='multipart/form-data')
         include _form
+
+block scripts
+  script(src='/public/js/listing-form.js')

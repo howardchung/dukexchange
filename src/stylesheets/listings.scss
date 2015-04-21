@@ -67,3 +67,21 @@
   margin-left: 3px;
   display: inline;
 }
+
+.dz-success-mark, .dz-error-mark {
+  display: none;
+}
+
+#dropzone-preview {
+  min-width: 150px;
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.dz-message {
+  color: #aaa;
+  cursor: pointer;
+}
