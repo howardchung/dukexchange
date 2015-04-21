@@ -3,10 +3,4 @@ extend layout
 block content
   .row
     .col-xs-12
-      ul.grid-listing
-        - each listing in listings
-          li.grid-listing-item
-            a(href='/listings/' + listing._id)
-              .grid-listing-image(style="background-image: url('/images/#{listing.images[0]}')")
-                .grid-listing-detail
-                  p= listing.title
+      include partials/_grid

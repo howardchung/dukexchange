@@ -11,6 +11,45 @@ var chance = new(require('chance')).Chance();
 var imageDirectory = process.env.IMAGE_DIRECTORY || './image';
 module.exports = function(db) {
   var listings = db.get('listings');
+
+  /**
+   * Middleware for retrieving filtered listings based on the query parameters.
+   * Also handles pagination.
+   */
+  var fetchFilteredListings = function(req, res, next) {
+    async.waterfall([
+      function(cb) {
+        var query;
+        if (_.isEmpty(req.query)) {
+          query = {};
+        } else {
+          query = {
+            $or: [
+              {size: req.query.size},
+              {condition: req.query.condition},
+              {brand: req.query.brand},
+              {color: req.query.color},
+              {category: req.query.category}
+            ]
+          }
+        }
+        listings.find(query, {
+          sort: {
+            createdAt: -1
+          }
+        }, function(err, listings) {
+          cb(err, listings);
+        });
+      }
+    ], function(err, listings) {
+      if (err) {
+        return next(err);
+      }
+      req.listings = listings;
+      next();
+    });
+  }
+
   //create a new listing
   router.post('/', requireUser, function(req, res, next) {
     async.waterfall([
@@ -71,6 +110,20 @@ module.exports = function(db) {
       return res.send('/listings/' + doc._id);
     });
   });
+
+  router.get('/browse', [fetchFilteredListings], function(req, res, next) {
+    return res.render('listings/browse', {
+      listings: req.listings,
+      attributes: attributes
+    });
+  });
+
+  router.get('/browse.json', [fetchFilteredListings], function(req, res, next) {
+    return res.json(_.map(req.listings, function(l) {
+      return _.defaults({_id: l._id.toString()}, l);
+    }));
+  });
+
   router.get('/new', requireUser, function(req, res, next) {
     res.render('listings/new', {
       attributes: attributes

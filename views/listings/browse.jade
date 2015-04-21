@@ -1,0 +1,8 @@
+extend ../layout
+
+block content
+  .row
+    .col-xs-12
+      #browse-grid(data-listings=JSON.stringify(listings), data-attributes=JSON.stringify(attributes))
+block scripts
+  script(src='/public/js/browse.js')
