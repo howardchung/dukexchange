@@ -31,34 +31,40 @@ module.exports = function(db) {
   router.use('/listings', listingRoutes(db));
   //public user profiles
   router.get('/users/:user_id', function(req, res, next) {
-    users.findOne({
-      _id: req.params.user_id
-    }, function(err, user) {
-      if (err) {
-        return next(err);
-      }
-      offers.find({
-        user_id: user._id
-      }, function(err, docs) {
-        if (err) {
-          return next(err);
-        }
-        //offers this user has made
-        async.each(docs, function(offer, cb) {
-          listings.findOne({
-            _id: offer.listing_id
-          }, function(err, l) {
-            //get listing name for each
-            offer.title = l.title;
-            cb(err);
-          });
-        }, function(err) {
+    async.waterfall([
+      function(cb) {
+        users.findOne({
+          _id: req.params.user_id
+        }, cb);
+      },
+      function(user, cb) {
+        offers.find({
+          user_id: user._id
+        }, function(err, offers) {
           if (err) {
-            return next(err);
+            return cb(err);
           }
-          res.locals.user.madeOffers = docs;
-          res.render("user");
+          async.each(offers, function(offer, cb) {
+            listings.findOne({
+              _id: offer.listing_id
+            }, function(err, l) {
+              //get listing name for each
+              offer.title = l.title;
+              cb(err);
+            });
+          }, function(err) {
+            if (err) {
+              return cb(err);
+            }
+            cb(err, user, offers);
+          });
         });
+      }
+    ],
+    function(err, user, offers) {
+      user.madeOffers = offers;
+      res.render("user", {
+        profileUser: user
       });
     });
   });
