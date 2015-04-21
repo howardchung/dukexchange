@@ -1,3 +1,7 @@
+@import './sidebar';
+body {
+  font-family: Helvetica, Arial;
+}
 ul {
   list-style-type: none;
 }
@@ -23,8 +27,8 @@ ul {
   flex: 1;
   border: 1px solid #eee;
   margin: 15px;
-  min-width: 250px;
-  max-width: 250px;
+  min-width: 30%;
+  max-width: 30%;
 }
 
 .grid-listing-image {
@@ -60,4 +64,13 @@ ul {
   margin-top: -6px;
   position: absolute;
   left: -25px;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.navbar-default {
+  background-color: transparent;
+  border-color: transparent;
 }

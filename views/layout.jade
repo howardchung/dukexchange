@@ -10,6 +10,10 @@ html(lang='en')
     link(rel='stylesheet', href='/public/css/listings.css')
   body
     include partials/_navbar
-    .container
-      block content
+    .container-fluid
+      .row
+        .col-xs-12.col-md-3.sidebar-nav-container
+          include partials/_sidebar
+        .col-xs-12.col-md-9.main-container
+            block content
     block scripts

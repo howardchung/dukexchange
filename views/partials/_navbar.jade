@@ -1,10 +1,11 @@
 nav.navbar.navbar-default
-  .container
-    .navbar-header
-      a(href='/', class = 'navbar-brand') Duke Exchange
-    ul.nav.navbar-nav
-      li
-        a(href="/listings/new") New Listing
+  .container-fluid
+    .visible-sm-block.visible-xs-block
+      .navbar-header
+        a(href='/', class = 'navbar-brand') Duke Exchange
+      ul.nav.navbar-nav
+        li
+          a(href="/listings/new") New Listing
     ul.nav.navbar-nav.navbar-right
       if user
         li
