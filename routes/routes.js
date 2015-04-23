@@ -44,10 +44,14 @@ module.exports = function(db) {
           if (err) {
             return cb(err);
           }
+          //get the offers this user has made
           async.each(offers, function(offer, cb) {
             listings.findOne({
               _id: offer.listing_id
             }, function(err, l) {
+              if (err){
+                return cb(err);
+              }
               //get listing name for each
               offer.title = l.title;
               cb(err);
@@ -56,19 +60,23 @@ module.exports = function(db) {
             if (err) {
               return cb(err);
             }
-            cb(err, user, offers);
+            user.madeOffers = offers;
+            cb(err, user);
           });
         });
       }
     ],
-    function(err, user, offers) {
-      user.madeOffers = offers;
+    function(err, user) {
       res.render("user", {
         profileUser: user
       });
     });
   });
   router.post("/offers", function(req, res, next) {
+    if (!res.locals.user){
+      //not logged in
+      return next("not logged in");
+    }
     var form = new multiparty.Form();
     form.parse(req, function(err, fields, files) {
       if (err) {
@@ -88,6 +96,7 @@ module.exports = function(db) {
       offers.insert({
         user_id: res.locals.user._id,
         value: Number(fields.value[0]),
+        message: fields.message[0],
         listing_id: fields.listing_id[0],
         date: new Date()
       }, function(err) {

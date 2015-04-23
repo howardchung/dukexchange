@@ -3,7 +3,7 @@ module.exports = {
   resolve: {
     root: [
       path.resolve(__dirname, './src/js'),
-      path.resolve(__dirname, './src/bower_components')
+      path.resolve(__dirname, './src/node_modules')
     ]
   },
   entry: {
