@@ -20,7 +20,8 @@ module.exports = function(db) {
     async.waterfall([
       function(cb) {
         var query;
-        if (_.isEmpty(req.query) || Object.keys(req.query)[0] === 'after') {
+        var queryKeys = Object.keys(req.query);
+        if (_.isEmpty(req.query) || (queryKeys.length === 1 && queryKeys[0] === 'after')) {
           query = {};
         } else {
           query = {
