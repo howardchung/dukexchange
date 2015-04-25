@@ -17,5 +17,18 @@
     "New with tags",
     "New without tags",
     "Used"
+  ],
+  "category": [
+    "Accessories",
+    "Basics",
+    "Beauty",
+    "Bottoms",
+    "Dresses",
+    "Grooming",
+    "Outerwear",
+    "Shoes",
+    "Shoes",
+    "Swimwear",
+    "Tops"
   ]
 }

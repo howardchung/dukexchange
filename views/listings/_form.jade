@@ -6,11 +6,11 @@ include ../mixins/form-field-helpers
     +text-form-group('title', 'Title', listing.title)
 .row
   .col-xs-12.col-md-4
-    +text-form-group('category', 'Category', listing.category)
+    +dropdown-form-group('category', 'Category', attributes['category'], listing.category)
   .col-xs-12.col-md-4
-    +dropdown-form-group('condition', 'Condition', attributes['condition'])
+    +dropdown-form-group('condition', 'Condition', attributes['condition'], listing.condition)
     +text-form-group('brand', 'Brand', listing.brand)
-    +dropdown-form-group('size', 'Size', attributes['size'])
+    +dropdown-form-group('size', 'Size', attributes['size'], listing.size)
     +text-form-group('color', 'Color', listing.color)
   .col-xs-12.col-md-4
     .form-group
