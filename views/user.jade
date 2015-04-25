@@ -1,7 +1,6 @@
 extend layout
 
 block content
-  pre=JSON.stringify(profileUser)
   .row
     .col-xs-12
       h1=profileUser.name.givenName
@@ -16,4 +15,3 @@ block content
       each offer in profileUser.madeOffers
         tr
           td: a(href="/listings/"+offer.listing_id)=offer.title
-    
