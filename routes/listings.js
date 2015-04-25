@@ -35,7 +35,7 @@ module.exports = function(db) {
           }
         }
         if (req.query.after) {
-          query._id = {$lte: listings.id(req.query.after)};
+          query._id = {$lt: listings.id(req.query.after)};
         }
         listings.find(query, {
           sort: {
