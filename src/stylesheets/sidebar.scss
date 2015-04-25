@@ -27,11 +27,7 @@
   color: #555;
 }
 
-.sidebar-title {
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #000;
-  &:hover {
-    text-decoration: none;
-  }
+.sidebar-logo {
+  margin-bottom: 15px;
+  width: 100%;
 }
