@@ -40,7 +40,7 @@ module.exports = function(db) {
           sort: {
             createdAt: -1,
           },
-          limit: 30
+          limit: 15
         }, function(err, listings) {
           cb(err, listings);
         });

@@ -28,6 +28,11 @@ var Browser = React.createClass({
       numPagesRetrieved: 1
     };
   },
+  getDefaultProps: function() {
+    return {
+      //useFilterer: true
+    }
+  },
   componentDidMount: function() {
     window.addEventListener('scroll', this.checkScrollBottom);
   },
@@ -37,7 +42,7 @@ var Browser = React.createClass({
       _that.setState({listings: data});
     });
   },
-  getMore: function() {
+  getMore: _.debounce(function() {
     var _that = this;
     var lastDate = _.last(this.state.listings).createdAt;
     fetch(_.extend({after: lastDate}, this.state.selected), function(data) {
@@ -45,9 +50,8 @@ var Browser = React.createClass({
         listings: update(_that.state.listings, {$push: data}),
         numPagesRetrieved: _that.state.numPagesRetrieved + 1
       });
-      console.log(_that.state.listings.map(function(l) { return l._id }));
     });
-  },
+  }, 500, true),
   onFieldSelect: _.debounce(function(attr, val) {
     var updatedVal = {};
     updatedVal[attr] = {$set: val};
@@ -69,12 +73,18 @@ var Browser = React.createClass({
     var getMore = (
       <a className='btn btn-default grid-get-more' onClick={this.getMore}>Get More</a>
     );
-    return (
-      <div className="browser">
+    var filterer;
+    if (this.props.useFilterer) {
+      filterer = (
         <Filterer
           attributes={this.props.attributes}
           onFieldSelect={this.onFieldSelect}
           />
+      );
+    }
+    return (
+      <div className="browser">
+        {this.props.useFilterer ? filterer : null}
         <ListingGrid listings={this.state.listings} />
         {this.state.numPagesRetrieved >= 3 ? getMore : null}
       </div>

@@ -16,7 +16,8 @@ module.exports = {
   },
   entry: {
     'listing-form': './src/js/listing-form.js',
-    'browse': './src/js/browse.js'
+    'browse': './src/js/browse.js',
+    'index': './src/js/index.js'
   },
   output: {
     filename: '[name].js',

@@ -3,4 +3,6 @@ extend layout
 block content
   .row
     .col-xs-12
-      include partials/_grid
+      #browse-grid(data-listings=JSON.stringify(listings))
+block scripts
+  script(src='/public/js/index.js')
