@@ -40,7 +40,7 @@ module.exports = function(db) {
           sort: {
             _id: -1,
           },
-          limit: 7
+          limit: 15
         }, function(err, listings) {
           cb(err, listings);
         });
