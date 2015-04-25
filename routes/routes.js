@@ -16,9 +16,9 @@ module.exports = function(db) {
       function(cb) {
         listings.find({}, {
           sort: {
-            createdAt: -1
+            _id: -1
           },
-          limit: 15
+          limit: 7
         }, function(err, listings) {
           cb(err, listings);
         });

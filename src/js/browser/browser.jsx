@@ -44,8 +44,8 @@ var Browser = React.createClass({
   },
   getMore: _.debounce(function() {
     var _that = this;
-    var lastDate = _.last(this.state.listings).createdAt;
-    fetch(_.extend({after: lastDate}, this.state.selected), function(data) {
+    var lastId = _.last(this.state.listings)._id;
+    fetch(_.extend({after: lastId}, this.state.selected), function(data) {
       _that.setState({
         listings: update(_that.state.listings, {$push: data}),
         numPagesRetrieved: _that.state.numPagesRetrieved + 1

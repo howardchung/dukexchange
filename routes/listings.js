@@ -20,7 +20,7 @@ module.exports = function(db) {
     async.waterfall([
       function(cb) {
         var query;
-        if (_.isEmpty(req.query)) {
+        if (_.isEmpty(req.query) || Object.keys(req.query)[0] === 'after') {
           query = {};
         } else {
           query = {
@@ -32,15 +32,15 @@ module.exports = function(db) {
               {category: req.query.category}
             ]
           }
-          if (req.query.after) {
-            query.createdAt = {$lt: new Date(req.query.after)};
-          }
+        }
+        if (req.query.after) {
+          query._id = {$lte: listings.id(req.query.after)};
         }
         listings.find(query, {
           sort: {
-            createdAt: -1,
+            _id: -1,
           },
-          limit: 15
+          limit: 7
         }, function(err, listings) {
           cb(err, listings);
         });
