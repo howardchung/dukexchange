@@ -2,8 +2,9 @@ var $ = require('jquery/dist/jquery');
 var Dropzone = require('dropzone/dist/dropzone');
 $(function() {
   var $form = $('form');
+  var action = $form.attr('action');
   var dropzone = new Dropzone('form', {
-    url: '/listings',
+    url: action,
     autoProcessQueue: false,
     uploadMultiple: true,
     previewsContainer: '#dropzone-preview',
@@ -22,7 +23,7 @@ $(function() {
           // HAX: dropzone doesn't submit the form when there are no files queued
           $.ajax({
             type: 'POST',
-            url: '/listings',
+            url: action,
             data: new FormData($form[0]),
             contentType: false,
             processData: false,

@@ -174,7 +174,7 @@ module.exports = function(db) {
       if (err) {
         return next(err);
       }
-      res.redirect('/listings/' + req.params.listing_id);
+      return res.send('/listings/' + listing._id);
     });
   });
   router.get('/:listing_id', function(req, res, next) {
