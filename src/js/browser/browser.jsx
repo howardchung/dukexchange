@@ -48,6 +48,7 @@ var Browser = React.createClass({
         });
       } else {
         _that.setState({
+          listings: data,
           gotEmpty: true
         });
       }
