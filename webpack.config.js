@@ -1,4 +1,7 @@
 var path = require('path');
+var webpack = require('webpack');
+var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+
 module.exports = {
   resolve: {
     root: [
@@ -22,4 +25,7 @@ module.exports = {
   output: {
     filename: '[name].js',
   },
+  plugins: [
+    new CommonsChunkPlugin('grid-commons.js', ['browse', 'index'])
+  ]
 };
