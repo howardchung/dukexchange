@@ -32,11 +32,15 @@ module.exports = function(db) {
               {category: req.query.category}
             ]
           }
+          if (req.query.after) {
+            query.createdAt = {$lt: new Date(req.query.after)};
+          }
         }
         listings.find(query, {
           sort: {
-            createdAt: -1
-          }
+            createdAt: -1,
+          },
+          limit: 30
         }, function(err, listings) {
           cb(err, listings);
         });

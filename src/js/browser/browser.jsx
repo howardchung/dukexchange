@@ -6,6 +6,12 @@ var Filterer = require('./filterer.jsx');
 var _ = require('underscore');
 var $ = require('jquery');
 
+var fetch = function(params, cb) {
+  var paramsString = $.param(params);
+  $.getJSON('/listings/browse.json?' + paramsString, function(data) {
+    cb(data);
+  });
+};
 var Browser = React.createClass({
   displayName: 'Browser',
   propTypes: {
@@ -18,14 +24,28 @@ var Browser = React.createClass({
   getInitialState: function() {
     return {
       listings: this.props.listings,
-      selected: {}
+      selected: {},
+      numPagesRetrieved: 1
     };
+  },
+  componentDidMount: function() {
+    window.addEventListener('scroll', this.checkScrollBottom);
   },
   getListings: function() {
     var _that = this;
-    var paramsString = $.param(this.state.selected);
-    $.getJSON('/listings/browse.json?' + paramsString, function(data) {
+    fetch(this.state.selected, function(data) {
       _that.setState({listings: data});
+    });
+  },
+  getMore: function() {
+    var _that = this;
+    var lastDate = _.last(this.state.listings).createdAt;
+    fetch(_.extend({after: lastDate}, this.state.selected), function(data) {
+      _that.setState({
+        listings: update(_that.state.listings, {$push: data}),
+        numPagesRetrieved: _that.state.numPagesRetrieved + 1
+      });
+      console.log(_that.state.listings.map(function(l) { return l._id }));
     });
   },
   onFieldSelect: _.debounce(function(attr, val) {
@@ -36,7 +56,19 @@ var Browser = React.createClass({
     });
     this.getListings();
   }, 500),
+  checkScrollBottom: function() {
+    if (this.state.numPagesRetrieved < 3) {
+      var threshold = 300;
+      var bottom = $(window).scrollTop() + $(window).height() >= $(document).height() - threshold;
+      if (bottom) {
+        this.getMore();
+      }
+    }
+  },
   render: function() {
+    var getMore = (
+      <a className='btn btn-default grid-get-more' onClick={this.getMore}>Get More</a>
+    );
     return (
       <div className="browser">
         <Filterer
@@ -44,6 +76,7 @@ var Browser = React.createClass({
           onFieldSelect={this.onFieldSelect}
           />
         <ListingGrid listings={this.state.listings} />
+        {this.state.numPagesRetrieved >= 3 ? getMore : null}
       </div>
     );
   }
