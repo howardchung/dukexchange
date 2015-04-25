@@ -30,7 +30,7 @@ var Browser = React.createClass({
   },
   getDefaultProps: function() {
     return {
-      //useFilterer: true
+      useFilterer: true
     }
   },
   componentDidMount: function() {
