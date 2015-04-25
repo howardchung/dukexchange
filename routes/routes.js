@@ -2,6 +2,9 @@ var listingRoutes = require('./listings');
 var router = require('express').Router();
 var async = require('async');
 var multiparty = require('multiparty');
+var sendgrid = require('sendgrid')(process.env.SENDGRID_USER, process.env.SENDGRID_KEY);
+var _ = require('underscore');
+
 module.exports = function(db) {
   var listings = db.get("listings");
   var reviews = db.get("reviews");
@@ -93,18 +96,59 @@ module.exports = function(db) {
       //offer value
       console.log(fields);
       console.log(files);
-      offers.insert({
-        user_id: res.locals.user._id,
-        value: Number(fields.value[0]),
-        message: fields.message[0],
-        listing_id: fields.listing_id[0],
-        date: new Date()
-      }, function(err) {
+      async.waterfall([
+        // Create offer
+        function(cb) {
+          offers.insert({
+            user_id: res.locals.user._id,
+            value: Number(fields.value[0]),
+            message: fields.message[0],
+            listing_id: fields.listing_id[0],
+            date: new Date()
+          }, function(err, offer) {
+            return cb(err, offer);
+          });
+        },
+        // Retrieve listing and listing's user
+        function(offer, wcb) {
+          async.parallel({
+            user: function(cb) {
+              users.findOne({
+                _id: offer.user_id
+              }, cb);
+            },
+            listing: function(cb) {
+              listings.findOne({
+                _id: offer.listing_id
+              }, cb);
+            }
+          }, function(err, results) {
+            wcb(err, offer, results.user, results.listing);
+          });
+        },
+        // Send email
+        function(offer, user, listing, cb) {
+          var template = _.template("Hi <%= name %>,\n\nYou've received an offer on <%= title %> from <%= offerer %>. \n\n$<%= value %>\n\nTheir message:\r\n<%= message %>\n\nYou can reply to this email to send this person an email to their email address.\n\n--\n\nDuke Exchange");
+          sendgrid.send({
+            from: res.locals.user.emails[0].value,
+            to: user.emails[0].value,
+            subject: '[Duke Exchange] New Message on "' + listing.title + '"',
+            text: template({
+              name: user.displayName,
+              title: listing.title,
+              value: offer.value,
+              message: offer.message, // Need to escape this if using in html
+              offerer: res.locals.user.displayName
+            })
+          }, function(err) {
+            cb(err, listing);
+          });
+        }
+      ], function(err, listing) {
         if (err) {
           return next(err);
         }
-        //offer made, redirect the user to their home page?
-        res.redirect("/users/" + res.locals.user._id);
+        res.redirect('/listings/' + listing._id);
       });
     });
   });
