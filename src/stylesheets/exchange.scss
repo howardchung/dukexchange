@@ -1,4 +1,3 @@
-@import './sidebar';
 body {
   font-family: Helvetica, Arial;
 }
@@ -91,3 +90,6 @@ a:hover {
   text-align: center;
   color: #aaa;
 }
+
+@import './sidebar';
+@import './page';

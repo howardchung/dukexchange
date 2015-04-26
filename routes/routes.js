@@ -33,6 +33,12 @@ module.exports = function(db) {
   });
   router.use('/listings', listingRoutes(db));
   //public user profiles
+  router.get('/about', function(req, res, next) {
+    res.render("about", {});
+  });
+  router.get('/contact', function(req, res, next) {
+    res.render("contact", {});
+  });
   router.get('/users/:user_id', function(req, res, next) {
     async.waterfall([
       function(cb) {
