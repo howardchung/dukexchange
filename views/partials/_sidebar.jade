@@ -5,6 +5,9 @@ ul.nav.nav-pills.nav-stacked.sidebar-nav.hidden-sm.hidden-xs
     a.sidebar-link(href='/listings/new') New Listing
   li
     a.sidebar-link(href='/listings/browse') Browse
+  - for category in attributes['category']
+    li
+      a.sidebar-link(href='/listings/browse?category=#{category}')= category
   li
     a.sidebar-sublink(href='#') About Us
   li
