@@ -203,36 +203,44 @@ module.exports = function(db) {
     });
   });
   router.get('/:listing_id', function(req, res, next) {
-    listings.findOne({
-      _id: req.params.listing_id
-    }, function(err, l) {
-      if (err) {
-        return next(err);
-      }
-      //listing owner can see emails of all offerers, up to user to contact and delete listing when item is sold
-      console.log(l._id)
-      db.get('offers').find({
-        listing_id: req.params.listing_id
-      }, function(err, docs) {
-        if (err) {
-          return next(err);
-        }
-        console.log(docs);
-        async.each(docs, function(offer, cb) {
+    //listing owner can see emails of all offerers, up to user to contact and delete listing when item is sold
+    async.waterfall([
+      function(cb) {
+        listings.findOne({
+          _id: req.params.listing_id
+        }, cb);
+      },
+      function(listing, cb) {
+        db.get('offers').find({
+          listing_id: req.params.listing_id
+        }, function(err, docs) {
+          cb(err, listing, docs);
+        });
+      },
+      function(listing, offers, cb) {
+        async.each(offers, function(offer, ecb) {
           db.get('users').findOne({_id: offer.user_id}, function(err, user) {
             //get email for each offer
             offer.email = user.emails[0].value;
-            cb(err);
+            ecb(err);
           });
         }, function(err) {
-          if (err) {
-            return next(err);
-          }
-          l.offers = docs;
-          res.render('listings/show', {
-            listing: l
-          });
+          listing.offers = offers;
+          cb(err, listing);
         });
+      },
+      function(listing, cb) {
+        db.get('users').findOne({_id: listing.user_id}, function(err, user) {
+          cb(err, listing, user);
+        });
+      }
+    ], function(err, listing, listingUser) {
+      if (err) {
+        return next(err);
+      }
+      return res.render('listings/show', {
+        listing: listing,
+        listingUser: listingUser
       });
     });
   });

@@ -53,7 +53,7 @@ block content
         +listing-tr('color', 'Color', listing)
       - if (listing.description)
         p= listing.description
-      p Listed by #{listing.user_id}
+      p Listed by #{listingUser.displayName}
       //-
         ul.listing-detail-action-list
           li.listing-detail-action
