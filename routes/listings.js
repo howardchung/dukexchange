@@ -138,7 +138,7 @@ module.exports = function(db) {
     listings.findOne({
       _id: req.params.listing_id
     }, function(err, listing) {
-      if (listing.user_id !== req.user._id) {
+      if (listing.user_id.toString() !== req.user._id.toString()) {
         res.redirect('/listings/' + listing._id);
       }
       res.render('listings/edit', {
