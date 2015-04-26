@@ -118,19 +118,21 @@ module.exports = function(db) {
         },
         // Retrieve listing and listing's user
         function(offer, wcb) {
-          async.parallel({
-            user: function(cb) {
-              users.findOne({
-                _id: offer.user_id
-              }, cb);
-            },
-            listing: function(cb) {
+          async.waterfall([
+            function(cb) {
               listings.findOne({
                 _id: offer.listing_id
               }, cb);
+            },
+            function(listing, cb) {
+              users.findOne({
+                _id: listing.user_id
+              }, function(err, user) {
+                cb(err, user, listing);
+              });
             }
-          }, function(err, results) {
-            wcb(err, offer, results.user, results.listing);
+          ], function(err, user, listing) {
+            wcb(err, offer, user, listing);
           });
         },
         // Send email
