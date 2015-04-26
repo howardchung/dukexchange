@@ -2,6 +2,7 @@ var express = require('express');
 var session = require('cookie-session');
 var app = express();
 var moment = require('moment');
+var flash = require('flash');
 var attributes = require('./config/attributes/clothing.json');
 //TODO: refactor process.env to config
 var imageDirectory = process.env.IMAGE_DIRECTORY || __dirname + '/image';
@@ -23,6 +24,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.locals.moment = moment;
 passport.serializeUser(function(user, done) {
     done(null, user);

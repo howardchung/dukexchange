@@ -24,5 +24,7 @@ html(lang='en')
         .col-xs-12.col-md-3.sidebar-nav-container
           include partials/_sidebar
         .col-xs-12.col-md-9.main-container
+            - while (f = flash.shift())
+              .alert(class="alert-#{f.type}")= f.message
             block content
     block scripts

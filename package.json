@@ -19,6 +19,7 @@
     "cookie-session": "^1.1.0",
     "dropzone": "^4.0.1",
     "express": "^4.12.3",
+    "flash": "^1.1.0",
     "foreman": "^1.3.0",
     "gm": "^1.17.0",
     "jade": "^1.9.2",
