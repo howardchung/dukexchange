@@ -1,5 +1,7 @@
 {
   "size": [
+    "N/A",
+    "One size"
     "XXS",
     "XS",
     "S",
@@ -19,15 +21,26 @@
     "18",
     "20",
     "22",
-    "4 (shoes)",
-    "5 (shoes)",
-    "6 (shoes)",
-    "7 (shoes)",
-    "8 (shoes)",
-    "9 (shoes)",
-    "10 (shoes)",
-    "11 (shoes)",
-    "12 (shoes)"
+    "4 (shoe)",
+    "4.5 (shoe)",
+    "5 (shoe)",
+    "5.5 (shoe)",
+    "6 (shoe)",
+    "6.5 (shoe)",
+    "7 (shoe)",
+    "7.5 (shoe)",
+    "8 (shoe)",
+    "8.5 (shoe)",
+    "9 (shoe)",
+    "9.5 (shoe)",
+    "10 (shoe)",
+    "10.5 (shoe)",
+    "11 (shoe)",
+    "11.5 (shoe)",
+    "12 (shoe)"
+    "12.5 (shoe)",
+    "13 (shoe)",
+    "13.5 (shoe)"
   ],
   "condition": [
     "Brand new",
@@ -44,7 +57,8 @@
     "Cars & Bikes",
     "Computers",
     "Electronics",
-    "Fashion",
+    "Fashion (Women)",
+    "Fashion (Men)",
     "Furniture",
     "Home & Appliances",
     "Services",
