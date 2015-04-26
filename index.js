@@ -2,6 +2,7 @@ var express = require('express');
 var session = require('cookie-session');
 var app = express();
 var moment = require('moment');
+var attributes = require('./config/attributes/clothing.json');
 //TODO: refactor process.env to config
 var imageDirectory = process.env.IMAGE_DIRECTORY || __dirname + '/image';
 //TODO: move db code to own file
@@ -52,9 +53,10 @@ passport.use(new GoogleStrategy({
         done(err, profile);
     });
 }));
-// Middleware to include user on every response
+// Middleware to include user and attributes on every response
 app.use(function(req, res, next) {
     res.locals.user = req.user;
+    res.locals.attributes = attributes;
     next();
 });
 app.get('/auth/google', passport.authenticate('google', {

@@ -12,6 +12,17 @@ var fetch = function(params, cb) {
     cb(data);
   });
 };
+
+// https://github.com/youbastard/jquery.getQueryParameters/blob/master/qp.js
+var getQueryParameters = function () {
+  return document.location.search
+    .replace(/(^\?)/,'')
+    .split("&")
+    .map(function(n){
+      return n=n.split("="),this[n[0]]=n[1],this;
+    }.bind({}))[0]
+};
+
 var Browser = React.createClass({
   displayName: 'Browser',
   propTypes: {
@@ -24,7 +35,7 @@ var Browser = React.createClass({
   getInitialState: function() {
     return {
       listings: this.props.listings,
-      selected: {},
+      selected: getQueryParameters(),
       numPagesRetrieved: 1,
       gotEmpty: false
     };

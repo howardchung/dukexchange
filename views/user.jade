@@ -1,17 +1,28 @@
 extend layout
 
 block content
+  //pre=JSON.stringify(profileUser)
   .row
     .col-xs-12
       h1=profileUser.name.givenName
   .row
     .col-xs-12.col-md-12
       img(src=profileUser.image.url)
-  //visible only if logged in?
   .row
     .col-md-12
-    h3 Offers
+    h3 Listings
+    table.table
+      each listing in profileUser.listings
+        tr
+          td: a(href="/listings/"+listing._id)=listing.title
+
+  //visible only if logged in?
+  
+  .row
+    .col-md-12
+    h3 Outstanding Offers
     table.table
       each offer in profileUser.madeOffers
         tr
           td: a(href="/listings/"+offer.listing_id)=offer.title
+          td=offer.value

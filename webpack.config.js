@@ -19,6 +19,7 @@ module.exports = {
   },
   entry: {
     'listing-form': './src/js/listing-form.js',
+    'listing-detail': './src/js/listing-detail.js',
     'browse': './src/js/browse.js',
     'index': './src/js/index.js'
   },
