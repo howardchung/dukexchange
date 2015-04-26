@@ -57,6 +57,7 @@ passport.use(new GoogleStrategy({
 app.use(function(req, res, next) {
     res.locals.user = req.user;
     res.locals.attributes = attributes;
+    res.locals.rootUrl = process.env.ROOT_URL;
     next();
 });
 app.get('/auth/google', passport.authenticate('google', {
