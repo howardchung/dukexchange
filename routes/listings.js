@@ -163,6 +163,7 @@ module.exports = function(db) {
       if (err) {
         return next(err);
       }
+      req.flash('success', 'You successfully deleted your listing.');
       return res.redirect('/');
     });
   });
@@ -199,6 +200,7 @@ module.exports = function(db) {
       if (err) {
         return next(err);
       }
+      req.flash('success', 'You successfully edited your listing.');
       return res.send('/listings/' + listing._id);
     });
   });

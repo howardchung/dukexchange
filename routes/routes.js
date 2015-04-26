@@ -163,6 +163,7 @@ module.exports = function(db) {
         if (err) {
           return next(err);
         }
+        req.flash('success', 'You made an offer on this listing!')
         res.redirect('/listings/' + listing._id);
       });
     });
