@@ -8,3 +8,5 @@ src/bower_components
 
 public/css
 public/js
+
+.DS_Store
