@@ -147,6 +147,26 @@ module.exports = function(db) {
       });
     });
   });
+
+  // deletes an existing listing
+  router.post('/:listing_id/delete', requireUser, function(req, res, next) {
+    async.waterfall([
+      function(cb) {
+        listings.remove({
+          _id: req.params.listing_id,
+          user_id: req.user._id
+        }, function(err) {
+          cb(err);
+        });
+      }
+    ], function(err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect('/');
+    });
+  });
+
   //edits an existing listing
   router.post('/:listing_id', requireUser, function(req, res, next) {
     async.waterfall([

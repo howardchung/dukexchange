@@ -72,11 +72,14 @@ block content
           button.btn.btn-primary(type="submit") Make Offer
 
       //show the existing offers
-      if (user && user.id === listing.user_id)
+      if (user && user._id.toString() == listing.user_id)
         //allow owner to modify listing
         ul.listing-detail-action-list
           li.listing-detail-action
             a.btn.btn-default(href='#{listing._id}/edit') Edit Listing
+          li.listing-detail-action
+            form.confirm-submit(action="/listings/#{listing._id}/delete" method="POST")
+              button.btn.btn-danger(type="submit") Delete Listing
         h3 Current Offers
         table.table
           tr
@@ -88,4 +91,5 @@ block content
               td=offer.value
               td=offer.message
               td: a(href="mailto:"+offer.email)= offer.email
-        pre=JSON.stringify(listing.offers)
+block scripts
+  script(src='/public/js/listing-detail.js')

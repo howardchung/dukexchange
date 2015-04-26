@@ -66,6 +66,12 @@
 .listing-detail-action {
   margin-left: 3px;
   display: inline;
+  &:first-child {
+    margin-left: 0px;
+  }
+  form {
+    display: inline;
+  }
 }
 
 .dz-success-mark, .dz-error-mark {
