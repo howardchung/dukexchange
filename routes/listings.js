@@ -101,7 +101,7 @@ module.exports = function(db) {
           color: _.first(fields.color) || '',
           category: _.first(fields.category) || '',
           price: _.first(fields.price) || '',
-          userId: req.user.id,
+          user_id: req.user._id,
           images: imgPaths,
           createdAt: new Date()
         }, function(err, doc) {
@@ -138,7 +138,7 @@ module.exports = function(db) {
     listings.findOne({
       _id: req.params.listing_id
     }, function(err, listing) {
-      if (listing.userId !== req.user.id) {
+      if (listing.user_id !== req.user._id) {
         res.redirect('/listings/' + listing._id);
       }
       res.render('listings/edit', {
@@ -159,7 +159,7 @@ module.exports = function(db) {
       function(fields, files, cb) {
         listings.findAndModify({
           _id: req.params.listing_id,
-          userId: req.user.id
+          user_id: req.user._id
         }, {
           $set: {
             title: _.first(fields.title) || '',
@@ -199,9 +199,9 @@ module.exports = function(db) {
         }
         console.log(docs);
         async.each(docs, function(offer, cb) {
-          db.get('users').findById(offer.user_id, function(err, user) {
+          db.get('users').findOne({_id: offer.user_id}, function(err, user) {
             //get email for each offer
-            offer.email = user.email;
+            offer.email = user.emails[0].value;
             cb(err);
           });
         }, function(err) {

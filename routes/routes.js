@@ -4,7 +4,6 @@ var async = require('async');
 var multiparty = require('multiparty');
 var sendgrid = require('sendgrid')(process.env.SENDGRID_USER, process.env.SENDGRID_KEY);
 var _ = require('underscore');
-
 module.exports = function(db) {
   var listings = db.get("listings");
   var reviews = db.get("reviews");
@@ -42,42 +41,49 @@ module.exports = function(db) {
         }, cb);
       },
       function(user, cb) {
-        offers.find({
+        listings.find({
           user_id: user._id
-        }, function(err, offers) {
+        }, function(err, docs) {
           if (err) {
             return cb(err);
           }
-          //get the offers this user has made
-          async.each(offers, function(offer, cb) {
-            listings.findOne({
-              _id: offer.listing_id
-            }, function(err, l) {
-              if (err){
-                return cb(err);
-              }
-              //get listing name for each
-              offer.title = l.title;
-              cb(err);
-            });
-          }, function(err) {
+          user.listings = docs;
+          offers.find({
+            user_id: user._id
+          }, function(err, docs) {
             if (err) {
               return cb(err);
             }
-            user.madeOffers = offers;
-            cb(err, user);
+            //get the offers this user has made
+            async.each(docs, function(offer, cb) {
+              listings.findOne({
+                _id: offer.listing_id
+              }, function(err, l) {
+                if (err) {
+                  return cb(err);
+                }
+                //get listing name for each
+                offer.title = l.title;
+                cb(err);
+              });
+            }, function(err) {
+              if (err) {
+                return cb(err);
+              }
+              user.madeOffers = docs;
+              cb(err, user);
+            });
           });
         });
       }
-    ],
-    function(err, user) {
+    ], function(err, user) {
       res.render("user", {
         profileUser: user
       });
     });
   });
   router.post("/offers", function(req, res, next) {
-    if (!res.locals.user){
+    if (!res.locals.user) {
       //not logged in
       return next("not logged in");
     }
