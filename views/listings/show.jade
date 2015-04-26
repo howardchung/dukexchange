@@ -3,8 +3,8 @@ extends ../layout
 block meta
   meta(property="og:title" content="#{listing.title} | DUKEXCHANGE")
   meta(property="og:description" content="#{listing.description}")
-  - if (listing.images.length > 0)
-    meta(property="og:image" content="#{rootUrl}/images/#{listing.images[0]}")
+  - for image in listing.images
+    meta(property="og:image" content="#{rootUrl}/images/#{image}")
 
 mixin listing-tr(fieldname, label, listing)
   - if (listing[fieldname])
