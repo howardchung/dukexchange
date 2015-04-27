@@ -11,6 +11,7 @@ var chance = new(require('chance')).Chance();
 var imageDirectory = process.env.IMAGE_DIRECTORY || './image';
 module.exports = function(db) {
   var listings = db.get('listings');
+  var offers = db.get('offers');
 
   /**
    * Middleware for retrieving filtered listings based on the query parameters.
@@ -155,9 +156,20 @@ module.exports = function(db) {
         listings.remove({
           _id: req.params.listing_id,
           user_id: req.user._id
-        }, function(err) {
-          cb(err);
+        }, function(err, numDeleted) {
+          cb(err, numDeleted);
         });
+      },
+      function(numDeleted, cb) {
+        if (numDeleted > 0) {
+          offers.remove({
+            listing_id: req.params.listing_id
+          }, function(err) {
+            cb(err);
+          });
+        } else {
+          cb();
+        }
       }
     ], function(err) {
       if (err) {
