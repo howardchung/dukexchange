@@ -22,7 +22,7 @@ var ListingGrid = React.createClass({
               className="grid-listing-image"
               style={listingStyle}>
               <div className="grid-listing-detail">
-                <p>{listing.title}</p>
+                <p>{listing.title} (${listing.price})</p>
               </div>
             </div>
           </a>
