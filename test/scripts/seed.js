@@ -1,5 +1,6 @@
 var lorem = require('lorem-ipsum');
-var db = require('monk')(process.env.MONGOLAB_URI || "mongodb://localhost/dukeexchange");
+var env = require('../../env');
+var db = require('monk')(env.MONGOLAB_URI);
 var _ = require('underscore');
 var async = require('async');
 

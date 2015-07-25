@@ -3,11 +3,11 @@ var session = require('cookie-session');
 var app = express();
 var moment = require('moment');
 var flash = require('flash');
+var env = require('./env');
 var attributes = require('./config/attributes/clothing.json');
-//TODO: refactor process.env to config
-var imageDirectory = process.env.IMAGE_DIRECTORY || __dirname + '/image';
+var imageDirectory = env.IMAGE_DIRECTORY;
 //TODO: move db code to own file
-var db = require('monk')(process.env.MONGOLAB_URI || "mongodb://localhost/dukeexchange");
+var db = require('monk')(env.MONGOLAB_URI);
 var users = db.get("users");
 users.index('id', {
     unique: true
@@ -20,7 +20,7 @@ app.set('view engine', 'jade');
 app.use('/public', express.static(__dirname + '/public'));
 app.use("/images", express.static(imageDirectory));
 app.use(session({
-    secret: process.env.SESSION_SECRET
+    secret: env.SESSION_SECRET
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -39,9 +39,9 @@ passport.deserializeUser(function(obj, done) {
     });
 });
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.ROOT_URL + "/auth/google/return"
+    clientID: env.GOOGLE_CLIENT_ID,
+    clientSecret: env.GOOGLE_CLIENT_SECRET,
+    callbackURL: env.ROOT_URL + "/auth/google/return"
 }, function(token, tokenSecret, profile, done) {
     profile = profile._json;
     //put user in db
@@ -59,7 +59,7 @@ passport.use(new GoogleStrategy({
 app.use(function(req, res, next) {
     res.locals.user = req.user;
     res.locals.attributes = attributes;
-    res.locals.rootUrl = process.env.ROOT_URL;
+    res.locals.rootUrl = env.ROOT_URL;
     next();
 });
 app.get('/auth/google', passport.authenticate('google', {
@@ -87,7 +87,7 @@ app.use(function(err, req, res, next) {
     next(err);
 });
 //start listening
-var server = app.listen(process.env.PORT || 5000, function() {
+var server = app.listen(env.PORT, function() {
     var host = server.address().address;
     var port = server.address().port;
     console.log('[WEB] listening at http://%s:%s', host, port);

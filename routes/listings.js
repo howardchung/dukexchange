@@ -4,11 +4,12 @@ var async = require('async');
 var _ = require('underscore');
 var requireUser = require('../lib/helpers').requireUser;
 var attributes = require('../config/attributes/clothing.json');
+var env = require('../env');
 var gm = require('gm').subClass({
   imageMagick: true
 });
 var chance = new(require('chance')).Chance();
-var imageDirectory = process.env.IMAGE_DIRECTORY || './image';
+var imageDirectory = env.IMAGE_DIRECTORY;
 module.exports = function(db) {
   var listings = db.get('listings');
   var offers = db.get('offers');
